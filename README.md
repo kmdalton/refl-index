@@ -7,35 +7,25 @@ entire file.
 
 ## Setup
 
+First-time setup (creates `.venv` and installs dependencies):
+
 ```bash
 cd /path/to/refl-index
 uv sync --extra numpy
 ```
 
-This creates a `.venv` and installs the package with numpy support (needed for
-reading data). Omit `--extra numpy` if you only need indexing.
+Omit `--extra numpy` if you only need indexing (no data reading).
 
-> **SDF note:** If your home directory has limited quota, set `UV_CACHE_DIR`
-> to a project-space path before running uv commands, e.g.:
-> ```bash
-> export UV_CACHE_DIR=/sdf/data/lcls/ds/prj/prjdat21/results/cwang31/.UV_CACHE
-> ```
-
-## CLI Usage
-
-`uv run` must be invoked from the project directory, or use `--project` to
-point to it from anywhere:
+Then, to use `refl-index` from any directory, source the environment file:
 
 ```bash
-# From the project directory
-cd /path/to/refl-index
-uv run refl-index build /path/to/reflections.refl
-
-# From any directory
-uv run --project /path/to/refl-index refl-index build /path/to/reflections.refl
+source /path/to/refl-index/env.sh
 ```
 
-The examples below assume you are in the project directory.
+This sets `UV_CACHE_DIR` for SDF and defines a `refl-index` shell function so
+the CLI works from anywhere.
+
+## CLI Usage
 
 ### Build an index
 
