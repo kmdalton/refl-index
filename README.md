@@ -5,27 +5,28 @@ sidecar index (~3 KB) that records byte offsets of each column's binary blob,
 then uses `file.seek()` to read any column or row range without parsing the
 entire file.
 
-## Install
+## Setup
 
 ```bash
-# From local path (with numpy support for reading data)
-UV_CACHE_DIR=/sdf/data/lcls/ds/prj/prjdat21/results/cwang31/.UV_CACHE \
-  uv pip install -e "/sdf/data/lcls/ds/prj/prjdat21/results/cwang31/refl-index[numpy]"
+cd /path/to/refl-index
+uv sync --extra numpy
 ```
 
-Without numpy (indexing only, no data reading):
+This creates a `.venv` and installs the package with numpy support (needed for
+reading data). Omit `--extra numpy` if you only need indexing.
 
-```bash
-UV_CACHE_DIR=/sdf/data/lcls/ds/prj/prjdat21/results/cwang31/.UV_CACHE \
-  uv pip install -e "/sdf/data/lcls/ds/prj/prjdat21/results/cwang31/refl-index"
-```
+> **SDF note:** If your home directory has limited quota, set `UV_CACHE_DIR`
+> to a project-space path before running uv commands, e.g.:
+> ```bash
+> export UV_CACHE_DIR=/sdf/data/lcls/ds/prj/prjdat21/results/cwang31/.UV_CACHE
+> ```
 
 ## CLI Usage
 
 ### Build an index
 
 ```bash
-$ refl-index build /path/to/reflections.refl
+$ uv run refl-index build /path/to/reflections.refl
 Building index for /path/to/reflections.refl ...
 Saved index to /path/to/reflections.refl.idx
   rows:        20,380,600
@@ -37,7 +38,7 @@ Saved index to /path/to/reflections.refl.idx
 ### Inspect an index
 
 ```bash
-$ refl-index info reflections.refl.idx
+$ uv run refl-index info reflections.refl.idx
 Index: reflections.refl.idx
   refl_path:   /path/to/reflections.refl
   file_size:   6,707,407,141
@@ -56,10 +57,10 @@ miller_index                             cctbx::miller::index<>          12   20
 
 ```bash
 # First 5 rows of a specific column
-$ refl-index read reflections.refl.idx -c intensity.sum.value --head 5
+$ uv run refl-index read reflections.refl.idx -c intensity.sum.value --head 5
 
 # Multiple columns, row range
-$ refl-index read reflections.refl.idx -c intensity.sum.value miller_index --start 100 --stop 110
+$ uv run refl-index read reflections.refl.idx -c intensity.sum.value miller_index --start 100 --stop 110
 ```
 
 ## Python Usage
@@ -127,6 +128,5 @@ For details on the `.refl` file format, see
 ## Running Tests
 
 ```bash
-UV_CACHE_DIR=/sdf/data/lcls/ds/prj/prjdat21/results/cwang31/.UV_CACHE \
-  uv run pytest tests/ -v
+uv run pytest tests/ -v
 ```
