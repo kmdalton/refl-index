@@ -23,6 +23,20 @@ reading data). Omit `--extra numpy` if you only need indexing.
 
 ## CLI Usage
 
+`uv run` must be invoked from the project directory, or use `--project` to
+point to it from anywhere:
+
+```bash
+# From the project directory
+cd /path/to/refl-index
+uv run refl-index build /path/to/reflections.refl
+
+# From any directory
+uv run --project /path/to/refl-index refl-index build /path/to/reflections.refl
+```
+
+The examples below assume you are in the project directory.
+
 ### Build an index
 
 ```bash
